@@ -101,4 +101,12 @@ defmodule InternetOfMills.Peripheral do
   def change_mill(%Mill{} = mill) do
     Mill.changeset(mill, %{})
   end
+
+  def turn_on(%Mill{} = mill) do
+    IO.puts("Turning on mill #{mill.name}")
+  end
+
+  def turn_off(%Mill{} = mill) do
+    IO.puts("Turning off mill #{mill.name}")
+  end
 end

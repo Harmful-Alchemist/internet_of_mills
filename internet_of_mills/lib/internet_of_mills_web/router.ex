@@ -23,6 +23,9 @@ defmodule InternetOfMillsWeb.Router do
   scope "/api", InternetOfMillsWeb do
     pipe_through :api
 
-    resources "/mills", MillController, except: [:new, :edit]
+    resources "/mills", MillController, except: [:new, :edit] do
+      get "/on", MillController, :on
+      get "/off", MillController, :off
+  end
   end
 end
