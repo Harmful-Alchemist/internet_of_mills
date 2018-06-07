@@ -3,26 +3,29 @@ module Mill exposing (..)
 import Json.Encode
 import Json.Decode exposing (field)
 
-type alias Something =
+type alias Mill =
     { mill_type : String
     , name : String
-    , ioPin : Int
+    , io_pin : Int
     , id : Int
     }
 
-decodeSomething : Json.Decode.Decoder Something
-decodeSomething =
-    Json.Decode.map4 Something
+decodeMill : Json.Decode.Decoder Mill
+decodeMill =
+    Json.Decode.map4 Mill
         (field "type" Json.Decode.string)
         (field "name" Json.Decode.string)
-        (field "ioPin" Json.Decode.int)
+        (field "io_pin" Json.Decode.int)
         (field "id" Json.Decode.int)
 
-encodeSomething : Something -> Json.Encode.Value
-encodeSomething record =
+encodeMill : Mill -> Json.Encode.Value
+encodeMill record =
     Json.Encode.object
+      [ ("mill", Json.Encode.object <|
         [ ("type",  Json.Encode.string <| record.mill_type)
         , ("name",  Json.Encode.string <| record.name)
-        , ("ioPin",  Json.Encode.int <| record.ioPin)
-        , ("id",  Json.Encode.int <| record.id)
+        , ("io_pin",  Json.Encode.int <| record.io_pin)
+        -- , ("id" , Json.Encode.int <| record.id)
         ]
+        )
+      ]

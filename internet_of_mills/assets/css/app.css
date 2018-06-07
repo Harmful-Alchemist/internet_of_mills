@@ -1,1 +1,23 @@
 /* This file is for your main application css. */
+.mills {
+  display: flex;
+  flex-wrap: wrap;
+  margin: : 10px;
+}
+
+.mill {
+ background-image: url("/images/mill.jpg");
+ margin: 10px;
+ border-radius: 5px;
+}
+
+.mill .name {
+  margin: 10px;
+}
+
+.mill .mill_type {
+  margin: 10px;
+}
+.mill .io_pin {
+  margin: 10px;
+}

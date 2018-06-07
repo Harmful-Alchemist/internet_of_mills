@@ -1,47 +1,48 @@
-var _user$project$Mill$encodeSomething = function (record) {
+var _user$project$Mill$encodeMill = function (record) {
 	return _elm_lang$core$Json_Encode$object(
 		{
 			ctor: '::',
 			_0: {
 				ctor: '_Tuple2',
-				_0: 'type',
-				_1: _elm_lang$core$Json_Encode$string(record.mill_type)
-			},
-			_1: {
-				ctor: '::',
-				_0: {
-					ctor: '_Tuple2',
-					_0: 'name',
-					_1: _elm_lang$core$Json_Encode$string(record.name)
-				},
-				_1: {
-					ctor: '::',
-					_0: {
-						ctor: '_Tuple2',
-						_0: 'ioPin',
-						_1: _elm_lang$core$Json_Encode$int(record.ioPin)
-					},
-					_1: {
+				_0: 'mill',
+				_1: _elm_lang$core$Json_Encode$object(
+					{
 						ctor: '::',
 						_0: {
 							ctor: '_Tuple2',
-							_0: 'id',
-							_1: _elm_lang$core$Json_Encode$int(record.id)
+							_0: 'type',
+							_1: _elm_lang$core$Json_Encode$string(record.mill_type)
 						},
-						_1: {ctor: '[]'}
-					}
-				}
-			}
+						_1: {
+							ctor: '::',
+							_0: {
+								ctor: '_Tuple2',
+								_0: 'name',
+								_1: _elm_lang$core$Json_Encode$string(record.name)
+							},
+							_1: {
+								ctor: '::',
+								_0: {
+									ctor: '_Tuple2',
+									_0: 'io_pin',
+									_1: _elm_lang$core$Json_Encode$int(record.io_pin)
+								},
+								_1: {ctor: '[]'}
+							}
+						}
+					})
+			},
+			_1: {ctor: '[]'}
 		});
 };
-var _user$project$Mill$Something = F4(
+var _user$project$Mill$Mill = F4(
 	function (a, b, c, d) {
-		return {mill_type: a, name: b, ioPin: c, id: d};
+		return {mill_type: a, name: b, io_pin: c, id: d};
 	});
-var _user$project$Mill$decodeSomething = A5(
+var _user$project$Mill$decodeMill = A5(
 	_elm_lang$core$Json_Decode$map4,
-	_user$project$Mill$Something,
+	_user$project$Mill$Mill,
 	A2(_elm_lang$core$Json_Decode$field, 'type', _elm_lang$core$Json_Decode$string),
 	A2(_elm_lang$core$Json_Decode$field, 'name', _elm_lang$core$Json_Decode$string),
-	A2(_elm_lang$core$Json_Decode$field, 'ioPin', _elm_lang$core$Json_Decode$int),
+	A2(_elm_lang$core$Json_Decode$field, 'io_pin', _elm_lang$core$Json_Decode$int),
 	A2(_elm_lang$core$Json_Decode$field, 'id', _elm_lang$core$Json_Decode$int));
