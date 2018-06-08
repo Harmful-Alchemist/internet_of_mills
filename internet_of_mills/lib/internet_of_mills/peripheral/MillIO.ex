@@ -2,6 +2,8 @@ defmodule  InternetOfMills.Peripheral.MillIO do
   @moduledoc """
   Turn mills on and off and see if they're on or off
   """
+  
+  alias ElixirALE.GPIO
 
   def start_link do
     Agent.start_link fn -> [] end, name: __MODULE__
@@ -11,12 +13,13 @@ defmodule  InternetOfMills.Peripheral.MillIO do
    Add a mill so we can interact with it's pin.
   """
   def add(mill) do
+    IO.puts("adding a mill")
     case GPIO.start_link(mill.io_pin, :output)  do
         {:ok, pid} ->
           Agent.update __MODULE__, fn mills -> [{mill, pid} | mills] end
           {:ok, pid}
-        error ->
-          error
+        {:error, msg} ->
+          {:error, msg}
     end
 
 
@@ -50,6 +53,7 @@ defmodule  InternetOfMills.Peripheral.MillIO do
   Turn off a mill.
   """
   def off(mill) do
+    IO.puts("turning off mill")
     {mill, pid} = find(mill)
     GPIO.write(pid, false)
   end
@@ -67,6 +71,7 @@ defmodule  InternetOfMills.Peripheral.MillIO do
   end
 
   def find(mill) do
+    IO.puts("looking for a mill")
     Agent.get  __MODULE__, fn mills -> Enum.find(mills, fn(element) -> match?({mill, _}, element) end) end
   end
 

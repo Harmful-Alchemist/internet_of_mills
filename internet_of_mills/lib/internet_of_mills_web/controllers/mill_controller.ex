@@ -48,7 +48,7 @@ defmodule InternetOfMillsWeb.MillController do
 
   def off(conn,  %{"mill_id" => id}) do
     mill = Peripheral.get_mill!(id)
-    Peripheral.turn_on(mill)
+    Peripheral.turn_off(mill)
     render(conn, "show.json", mill: mill)
   end
 

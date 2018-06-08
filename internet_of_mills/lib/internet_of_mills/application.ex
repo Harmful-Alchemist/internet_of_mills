@@ -13,8 +13,7 @@ defmodule InternetOfMills.Application do
       # Start the endpoint when the application starts
       supervisor(InternetOfMillsWeb.Endpoint, []),
       # Start your own worker by calling: InternetOfMills.Worker.start_link(arg1, arg2, arg3)
-      # worker(InternetOfMills.Worker, [arg1, arg2, arg3]),
-      supervise(InternetOfMills.Peripheral.MillIO, [])
+      supervisor(InternetOfMills.Peripheral.MillIO, []),
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

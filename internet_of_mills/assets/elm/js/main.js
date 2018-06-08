@@ -9070,17 +9070,18 @@ var _user$project$Mill$encodeMill = function (record) {
 			_1: {ctor: '[]'}
 		});
 };
-var _user$project$Mill$Mill = F4(
-	function (a, b, c, d) {
-		return {mill_type: a, name: b, io_pin: c, id: d};
+var _user$project$Mill$Mill = F5(
+	function (a, b, c, d, e) {
+		return {mill_type: a, name: b, io_pin: c, id: d, on: e};
 	});
-var _user$project$Mill$decodeMill = A5(
-	_elm_lang$core$Json_Decode$map4,
+var _user$project$Mill$decodeMill = A6(
+	_elm_lang$core$Json_Decode$map5,
 	_user$project$Mill$Mill,
 	A2(_elm_lang$core$Json_Decode$field, 'type', _elm_lang$core$Json_Decode$string),
 	A2(_elm_lang$core$Json_Decode$field, 'name', _elm_lang$core$Json_Decode$string),
 	A2(_elm_lang$core$Json_Decode$field, 'io_pin', _elm_lang$core$Json_Decode$int),
-	A2(_elm_lang$core$Json_Decode$field, 'id', _elm_lang$core$Json_Decode$int));
+	A2(_elm_lang$core$Json_Decode$field, 'id', _elm_lang$core$Json_Decode$int),
+	A2(_elm_lang$core$Json_Decode$field, 'on', _elm_lang$core$Json_Decode$bool));
 
 var _user$project$Main$subscriptions = function (model) {
 	return _elm_lang$core$Platform_Sub$none;
@@ -9127,11 +9128,47 @@ var _user$project$Main$pinOptions = function (model) {
 		_user$project$Main$pinToOption,
 		{ctor: '::', _0: -1, _1: possiblePiPins});
 };
-var _user$project$Main$emptyMill = {mill_type: '', name: '', io_pin: -1, id: -1};
+var _user$project$Main$emptyMill = {mill_type: '', name: '', io_pin: -1, id: -1, on: false};
 var _user$project$Main$Model = F3(
 	function (a, b, c) {
 		return {mills: a, newMill: b, error: c};
 	});
+var _user$project$Main$SubmittedOnOff = function (a) {
+	return {ctor: 'SubmittedOnOff', _0: a};
+};
+var _user$project$Main$onOff = function (mill) {
+	var url = function () {
+		var _p0 = mill.on;
+		if (_p0 === true) {
+			return A2(
+				_elm_lang$core$Basics_ops['++'],
+				'/api/mills/',
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					_elm_lang$core$Basics$toString(mill.id),
+					'/off'));
+		} else {
+			return A2(
+				_elm_lang$core$Basics_ops['++'],
+				'/api/mills/',
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					_elm_lang$core$Basics$toString(mill.id),
+					'/on'));
+		}
+	}();
+	return A2(
+		_elm_lang$http$Http$send,
+		_user$project$Main$SubmittedOnOff,
+		A3(
+			_elm_lang$http$Http$post,
+			url,
+			_elm_lang$http$Http$emptyBody,
+			_elm_lang$core$Json_Decode$succeed('')));
+};
+var _user$project$Main$OnOff = function (a) {
+	return {ctor: 'OnOff', _0: a};
+};
 var _user$project$Main$SubmittedUpdatedMill = function (a) {
 	return {ctor: 'SubmittedUpdatedMill', _0: a};
 };
@@ -9167,13 +9204,13 @@ var _user$project$Main$SubmittedNewMill = function (a) {
 };
 var _user$project$Main$postNewMill = F2(
 	function (model, mill) {
-		var _p0 = {
+		var _p1 = {
 			ctor: '_Tuple2',
 			_0: '/api/mills',
 			_1: _user$project$Mill$encodeMill(mill)
 		};
-		var url = _p0._0;
-		var encodedMill = _p0._1;
+		var url = _p1._0;
+		var encodedMill = _p1._1;
 		return A2(
 			_elm_lang$http$Http$send,
 			_user$project$Main$SubmittedNewMill,
@@ -9187,8 +9224,8 @@ var _user$project$Main$SubmitNewMill = function (a) {
 	return {ctor: 'SubmitNewMill', _0: a};
 };
 var _user$project$Main$correctButton = function (mill) {
-	var _p1 = mill.id;
-	if (_p1 === -1) {
+	var _p2 = mill.id;
+	if (_p2 === -1) {
 		return A2(
 			_elm_lang$html$Html$button,
 			{
@@ -9220,8 +9257,8 @@ var _user$project$Main$correctButton = function (mill) {
 };
 var _user$project$Main$validationResult = F3(
 	function (color, message, mill) {
-		var _p2 = color;
-		if (_p2 === 'green') {
+		var _p3 = color;
+		if (_p3 === 'green') {
 			return {
 				ctor: '::',
 				_0: _elm_lang$html$Html$text(message),
@@ -9241,9 +9278,9 @@ var _user$project$Main$validationResult = F3(
 	});
 var _user$project$Main$validateMill = F2(
 	function (model, mill) {
-		var _p3 = _elm_lang$core$Native_Utils.eq(mill.name, '') ? {ctor: '_Tuple2', _0: 'red', _1: 'Please enter a name'} : (_elm_lang$core$Native_Utils.eq(mill.mill_type, '') ? {ctor: '_Tuple2', _0: 'red', _1: 'Please enter a type'} : (_elm_lang$core$Native_Utils.eq(mill.io_pin, -1) ? {ctor: '_Tuple2', _0: 'red', _1: 'Please enter a pin number'} : {ctor: '_Tuple2', _0: 'green', _1: 'Looking good!'}));
-		var color = _p3._0;
-		var message = _p3._1;
+		var _p4 = _elm_lang$core$Native_Utils.eq(mill.name, '') ? {ctor: '_Tuple2', _0: 'red', _1: 'Please enter a name'} : (_elm_lang$core$Native_Utils.eq(mill.mill_type, '') ? {ctor: '_Tuple2', _0: 'red', _1: 'Please enter a type'} : (_elm_lang$core$Native_Utils.eq(mill.io_pin, -1) ? {ctor: '_Tuple2', _0: 'red', _1: 'Please enter a pin number'} : {ctor: '_Tuple2', _0: 'green', _1: 'Looking good!'}));
+		var color = _p4._0;
+		var message = _p4._1;
 		return A2(
 			_elm_lang$html$Html$div,
 			{
@@ -9272,9 +9309,9 @@ var _user$project$Main$NewName = F2(
 	});
 var _user$project$Main$newMillForm = F2(
 	function (model, mill) {
-		var _p4 = function () {
-			var _p5 = mill.id;
-			if (_p5 === -1) {
+		var _p5 = function () {
+			var _p6 = mill.id;
+			if (_p6 === -1) {
 				return {ctor: '_Tuple3', _0: 'name', _1: 'type', _2: 'io pin number'};
 			} else {
 				return {
@@ -9285,9 +9322,9 @@ var _user$project$Main$newMillForm = F2(
 				};
 			}
 		}();
-		var namePh = _p4._0;
-		var typePh = _p4._1;
-		var pinPh = _p4._2;
+		var namePh = _p5._0;
+		var typePh = _p5._1;
+		var pinPh = _p5._2;
 		return A2(
 			_elm_lang$html$Html$div,
 			{
@@ -9372,11 +9409,19 @@ var _user$project$Main$Delete = function (a) {
 	return {ctor: 'Delete', _0: a};
 };
 var _user$project$Main$viewMill = function (mill) {
+	var millClass = function () {
+		var _p7 = mill.on;
+		if (_p7 === true) {
+			return 'millOn';
+		} else {
+			return 'millOff';
+		}
+	}();
 	return A2(
 		_elm_lang$html$Html$div,
 		{
 			ctor: '::',
-			_0: _elm_lang$html$Html_Attributes$class('mill'),
+			_0: _elm_lang$html$Html_Attributes$class(millClass),
 			_1: {ctor: '[]'}
 		},
 		{
@@ -9452,7 +9497,23 @@ var _user$project$Main$viewMill = function (mill) {
 									_0: _elm_lang$html$Html$text('Update'),
 									_1: {ctor: '[]'}
 								}),
-							_1: {ctor: '[]'}
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$button,
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html_Events$onClick(
+											_user$project$Main$OnOff(mill)),
+										_1: {ctor: '[]'}
+									},
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html$text('On/Off'),
+										_1: {ctor: '[]'}
+									}),
+								_1: {ctor: '[]'}
+							}
 						}
 					}
 				}
@@ -9470,8 +9531,8 @@ var _user$project$Main$viewMills = function (mills) {
 		A2(_elm_lang$core$List$map, _user$project$Main$viewMill, mills));
 };
 var _user$project$Main$normalView = function (model) {
-	var _p6 = model.newMill;
-	if (_p6.ctor === 'Just') {
+	var _p8 = model.newMill;
+	if (_p8.ctor === 'Just') {
 		return A2(
 			_elm_lang$html$Html$div,
 			{
@@ -9481,7 +9542,7 @@ var _user$project$Main$normalView = function (model) {
 			},
 			{
 				ctor: '::',
-				_0: A2(_user$project$Main$newMillForm, model, _p6._0),
+				_0: A2(_user$project$Main$newMillForm, model, _p8._0),
 				_1: {ctor: '[]'}
 			});
 	} else {
@@ -9535,8 +9596,8 @@ var _user$project$Main$init = {
 };
 var _user$project$Main$update = F2(
 	function (msg, model) {
-		var _p7 = msg;
-		switch (_p7.ctor) {
+		var _p9 = msg;
+		switch (_p9.ctor) {
 			case 'GetMills':
 				return {
 					ctor: '_Tuple2',
@@ -9546,12 +9607,12 @@ var _user$project$Main$update = F2(
 					_1: _user$project$Main$allMills
 				};
 			case 'NewMills':
-				if (_p7._0.ctor === 'Ok') {
+				if (_p9._0.ctor === 'Ok') {
 					return {
 						ctor: '_Tuple2',
 						_0: _elm_lang$core$Native_Utils.update(
 							model,
-							{mills: _p7._0._0}),
+							{mills: _p9._0._0}),
 						_1: _elm_lang$core$Platform_Cmd$none
 					};
 				} else {
@@ -9561,7 +9622,7 @@ var _user$project$Main$update = F2(
 							model,
 							{
 								error: _elm_lang$core$Maybe$Just(
-									_elm_lang$core$Basics$toString(_p7._0._0))
+									_elm_lang$core$Basics$toString(_p9._0._0))
 							}),
 						_1: _elm_lang$core$Platform_Cmd$none
 					};
@@ -9570,10 +9631,10 @@ var _user$project$Main$update = F2(
 				return {
 					ctor: '_Tuple2',
 					_0: model,
-					_1: _user$project$Main$deleteMill(_p7._0)
+					_1: _user$project$Main$deleteMill(_p9._0)
 				};
 			case 'Deleted':
-				if (_p7._0.ctor === 'Ok') {
+				if (_p9._0.ctor === 'Ok') {
 					return {ctor: '_Tuple2', _0: model, _1: _user$project$Main$allMills};
 				} else {
 					return {
@@ -9582,7 +9643,7 @@ var _user$project$Main$update = F2(
 							model,
 							{
 								error: _elm_lang$core$Maybe$Just(
-									_elm_lang$core$Basics$toString(_p7._0._0))
+									_elm_lang$core$Basics$toString(_p9._0._0))
 							}),
 						_1: _elm_lang$core$Platform_Cmd$none
 					};
@@ -9605,8 +9666,8 @@ var _user$project$Main$update = F2(
 						{
 							newMill: _elm_lang$core$Maybe$Just(
 								_elm_lang$core$Native_Utils.update(
-									_p7._0,
-									{name: _p7._1}))
+									_p9._0,
+									{name: _p9._1}))
 						}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
@@ -9618,8 +9679,8 @@ var _user$project$Main$update = F2(
 						{
 							newMill: _elm_lang$core$Maybe$Just(
 								_elm_lang$core$Native_Utils.update(
-									_p7._0,
-									{mill_type: _p7._1}))
+									_p9._0,
+									{mill_type: _p9._1}))
 						}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
@@ -9631,12 +9692,12 @@ var _user$project$Main$update = F2(
 						{
 							newMill: _elm_lang$core$Maybe$Just(
 								_elm_lang$core$Native_Utils.update(
-									_p7._0,
+									_p9._0,
 									{
 										io_pin: A2(
 											_elm_lang$core$Result$withDefault,
 											-1,
-											_elm_lang$core$String$toInt(_p7._1))
+											_elm_lang$core$String$toInt(_p9._1))
 									}))
 						}),
 					_1: _elm_lang$core$Platform_Cmd$none
@@ -9645,10 +9706,10 @@ var _user$project$Main$update = F2(
 				return {
 					ctor: '_Tuple2',
 					_0: model,
-					_1: A2(_user$project$Main$postNewMill, model, _p7._0)
+					_1: A2(_user$project$Main$postNewMill, model, _p9._0)
 				};
 			case 'SubmittedNewMill':
-				if (_p7._0.ctor === 'Ok') {
+				if (_p9._0.ctor === 'Ok') {
 					return {
 						ctor: '_Tuple2',
 						_0: _elm_lang$core$Native_Utils.update(
@@ -9664,7 +9725,7 @@ var _user$project$Main$update = F2(
 							{
 								newMill: _elm_lang$core$Maybe$Nothing,
 								error: _elm_lang$core$Maybe$Just(
-									_elm_lang$core$Basics$toString(_p7._0._0))
+									_elm_lang$core$Basics$toString(_p9._0._0))
 							}),
 						_1: _elm_lang$core$Platform_Cmd$none
 					};
@@ -9675,7 +9736,7 @@ var _user$project$Main$update = F2(
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
 						{
-							newMill: _elm_lang$core$Maybe$Just(_p7._0)
+							newMill: _elm_lang$core$Maybe$Just(_p9._0)
 						}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
@@ -9683,10 +9744,10 @@ var _user$project$Main$update = F2(
 				return {
 					ctor: '_Tuple2',
 					_0: model,
-					_1: A2(_user$project$Main$putUpdatedMill, model, _p7._0)
+					_1: A2(_user$project$Main$putUpdatedMill, model, _p9._0)
 				};
-			default:
-				if (_p7._0.ctor === 'Ok') {
+			case 'SubmittedUpdatedMill':
+				if (_p9._0.ctor === 'Ok') {
 					return {
 						ctor: '_Tuple2',
 						_0: _elm_lang$core$Native_Utils.update(
@@ -9702,7 +9763,28 @@ var _user$project$Main$update = F2(
 							{
 								newMill: _elm_lang$core$Maybe$Nothing,
 								error: _elm_lang$core$Maybe$Just(
-									_elm_lang$core$Basics$toString(_p7._0._0))
+									_elm_lang$core$Basics$toString(_p9._0._0))
+							}),
+						_1: _elm_lang$core$Platform_Cmd$none
+					};
+				}
+			case 'OnOff':
+				return {
+					ctor: '_Tuple2',
+					_0: model,
+					_1: _user$project$Main$onOff(_p9._0)
+				};
+			default:
+				if (_p9._0.ctor === 'Ok') {
+					return {ctor: '_Tuple2', _0: model, _1: _user$project$Main$allMills};
+				} else {
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							model,
+							{
+								error: _elm_lang$core$Maybe$Just(
+									_elm_lang$core$Basics$toString(_p9._0._0))
 							}),
 						_1: _elm_lang$core$Platform_Cmd$none
 					};
@@ -9742,11 +9824,11 @@ var _user$project$Main$errorView = F2(
 			});
 	});
 var _user$project$Main$view = function (model) {
-	var _p8 = model.error;
-	if (_p8.ctor === 'Nothing') {
+	var _p10 = model.error;
+	if (_p10.ctor === 'Nothing') {
 		return _user$project$Main$normalView(model);
 	} else {
-		return A2(_user$project$Main$errorView, model, _p8._0);
+		return A2(_user$project$Main$errorView, model, _p10._0);
 	}
 };
 var _user$project$Main$main = _elm_lang$html$Html$program(
