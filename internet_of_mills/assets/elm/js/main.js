@@ -9331,13 +9331,9 @@ var _user$project$Main$newMillForm = F2(
 							_elm_lang$html$Html$select,
 							{
 								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$placeholder(pinPh),
-								_1: {
-									ctor: '::',
-									_0: _elm_lang$html$Html_Events$onInput(
-										_user$project$Main$NewPin(mill)),
-									_1: {ctor: '[]'}
-								}
+								_0: _elm_lang$html$Html_Events$onInput(
+									_user$project$Main$NewPin(mill)),
+								_1: {ctor: '[]'}
 							},
 							_user$project$Main$pinOptions(model)),
 						_1: {

@@ -35,14 +35,15 @@ var _user$project$Mill$encodeMill = function (record) {
 			_1: {ctor: '[]'}
 		});
 };
-var _user$project$Mill$Mill = F4(
-	function (a, b, c, d) {
-		return {mill_type: a, name: b, io_pin: c, id: d};
+var _user$project$Mill$Mill = F5(
+	function (a, b, c, d, e) {
+		return {mill_type: a, name: b, io_pin: c, id: d, on: e};
 	});
-var _user$project$Mill$decodeMill = A5(
-	_elm_lang$core$Json_Decode$map4,
+var _user$project$Mill$decodeMill = A6(
+	_elm_lang$core$Json_Decode$map5,
 	_user$project$Mill$Mill,
 	A2(_elm_lang$core$Json_Decode$field, 'type', _elm_lang$core$Json_Decode$string),
 	A2(_elm_lang$core$Json_Decode$field, 'name', _elm_lang$core$Json_Decode$string),
 	A2(_elm_lang$core$Json_Decode$field, 'io_pin', _elm_lang$core$Json_Decode$int),
-	A2(_elm_lang$core$Json_Decode$field, 'id', _elm_lang$core$Json_Decode$int));
+	A2(_elm_lang$core$Json_Decode$field, 'id', _elm_lang$core$Json_Decode$int),
+	A2(_elm_lang$core$Json_Decode$field, 'on', _elm_lang$core$Json_Decode$bool));

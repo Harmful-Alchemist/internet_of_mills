@@ -5,8 +5,14 @@
   margin: : 10px;
 }
 
-.mill {
- background-image: url("/images/mill.jpg");
+.millOff {
+ background-image: url("/images/mill_still.gif");
+ margin: 10px;
+ border-radius: 5px;
+}
+
+.millOn {
+ background-image: url("/images/mill.gif");
  margin: 10px;
  border-radius: 5px;
 }

@@ -42,12 +42,12 @@ defmodule InternetOfMillsWeb.MillController do
 
   def on(conn,  %{"mill_id" => id}) do
     Peripheral.get_mill!(id) |> Peripheral.turn_on
-    send_resp(conn, :no_content, "placeholder") #place holder resp, turn_on needs a return and error response TODO
+    render(conn, "show.json", mill: mill)
   end
 
   def off(conn,  %{"mill_id" => id}) do
     Peripheral.get_mill!(id) |> Peripheral.turn_off
-    send_resp(conn, :no_content, "placeholder") #place holder resp, turn_off needs a return and error response TODO
+    render(conn, "show.json", mill: mill)
   end
 
 end

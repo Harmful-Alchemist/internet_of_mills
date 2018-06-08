@@ -42,6 +42,8 @@ type Msg = GetMills
  | UpdateMill Mill
  | SubmitUpdatedMill Mill
  | SubmittedUpdatedMill (Result Http.Error String)
+ | OnOff Mill
+ | SubmittedOnOff (Result Http.Error String)
 
 update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
@@ -96,8 +98,17 @@ update msg model =
       ({model | newMill = Nothing},  allMills)
 
     SubmittedUpdatedMill (Err error) ->
-        ({model | newMill = Nothing
-        , error = Just (toString error)}, Cmd.none)
+      ({model | newMill = Nothing
+      , error = Just (toString error)}, Cmd.none)
+
+    OnOff mill ->
+      (model, onOff mill)
+
+    SubmittedOnOff (Ok mill) ->
+      (model, allMills)
+
+    SubmittedOnOff (Err error) ->
+      ({model | error = Just (toString error)}, Cmd.none)
 
 emptyMill : Mill
 emptyMill =
@@ -106,6 +117,7 @@ emptyMill =
   , name = ""
   , io_pin = -1
   , id = -1
+  , on = False
  }
 
 --View
@@ -140,16 +152,25 @@ viewMills mills =
 
 viewMill : Mill -> Html Msg
 viewMill mill =
-  div [class "mill"] [
+  let
+    millClass =
+      case mill.on of
+        True ->
+          "millOn"
+        False ->
+          "millOff"
+  in
+  div [class millClass] [
    div [class "name"] [text mill.name]
    , div [class "mill_type"] [text mill.mill_type]
    , div [class "io_pin"] [text (toString mill.io_pin)]
    , button [onClick (Delete mill)] [text "Delete" ]
    , button [onClick (UpdateMill mill)] [text "Update"]
+   , button [onClick (OnOff mill)] [text "On/Off"]
   ]
 
 newMillForm : Model -> Mill -> Html Msg
-newMillForm model mill = --TODO update for editing mills so name etc are alright and you can edit, make sure same pin is ok
+newMillForm model mill =
   let
     (namePh, typePh, pinPh) =
       case mill.id of
@@ -161,7 +182,7 @@ newMillForm model mill = --TODO update for editing mills so name etc are alright
     div [class "mill_form"] [
     input [placeholder namePh, onInput (NewName mill)][]
     , input [placeholder typePh, onInput (NewType mill)][]
-    , select [placeholder pinPh, onInput (NewPin mill)] (pinOptions model)
+    , select [onInput (NewPin mill)] (pinOptions model) --placeholder pinPh,  selected pin?
     , validateMill model mill
     ]
 
@@ -270,6 +291,18 @@ putUpdatedMill model mill =
       , timeout = Nothing
       , withCredentials = False
       } |> Http.send SubmittedUpdatedMill
+
+onOff : Mill -> Cmd Msg
+onOff mill =
+  let
+    url =
+      case mill.on of
+        True ->
+          "/api/mills/" ++ (toString mill.id) ++ "/off"
+        False ->
+          "/api/mills/" ++ (toString mill.id) ++ "/on"
+  in
+    Http.send SubmittedOnOff (Http.post url Http.emptyBody (Decode.succeed ""))
 
 --Subscriptions
 subscriptions : Model -> Sub Msg

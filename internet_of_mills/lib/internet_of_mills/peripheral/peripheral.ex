@@ -7,7 +7,7 @@ defmodule InternetOfMills.Peripheral do
   alias InternetOfMills.Repo
 
   alias InternetOfMills.Peripheral.Mill
-  alias ElixirALE.GPIO
+  alias InternetOfMills.Peripheral.MillIO
 
   @doc """
   Returns the list of mills.
@@ -104,17 +104,19 @@ defmodule InternetOfMills.Peripheral do
   end
 
   def turn_on(%Mill{} = mill) do
-     IO.puts("Turning on mill #{mill.name}")
-     :ok
-    # {:ok, pid} = GPIO.start_link(mill.io_pin, :output)
-    # GPIO.write(pid, true) # TODO
-
+    mill_ready(mill)
+    MillIO.on(mill)
   end
 
   def turn_off(%Mill{} = mill) do
-    IO.puts("Turning off mill #{mill.name}")
-    :ok
-    # {:ok, pid} = GPIO.start_link(mill.io_pin, :output)
-    # GPIO.write(pid, false) TODO
+    mill_ready(mill)
+    MillIO.off(mill)
   end
+
+  def mill_ready(mill) do
+    if MillIO.find(mill) == nil do
+      MillIO.add(mill)
+    end
+  end
+
 end
