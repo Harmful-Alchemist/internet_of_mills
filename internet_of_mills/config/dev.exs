@@ -14,6 +14,8 @@ config :internet_of_mills, InternetOfMillsWeb.Endpoint,
   watchers: [node: ["node_modules/brunch/bin/brunch", "watch", "--stdin",
                     cd: Path.expand("../assets", __DIR__)]]
 
+
+config :internet_of_mills, mill_io: InternetOfMills.Peripheral.FakeMillIO
 # ## SSL Support
 #
 # In order to use HTTPS in development, a self-signed

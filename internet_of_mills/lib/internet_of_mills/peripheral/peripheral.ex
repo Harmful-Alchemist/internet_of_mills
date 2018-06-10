@@ -7,7 +7,7 @@ defmodule InternetOfMills.Peripheral do
   alias InternetOfMills.Repo
 
   alias InternetOfMills.Peripheral.Mill
-  alias InternetOfMills.Peripheral.MillIO
+
 
   @doc """
   Returns the list of mills.
@@ -105,17 +105,17 @@ defmodule InternetOfMills.Peripheral do
 
   def turn_on(%Mill{} = mill) do
     mill_ready(mill)
-    MillIO.on(mill)
+    Application.get_env(:internet_of_mills, :mill_io).on(mill)
   end
 
   def turn_off(%Mill{} = mill) do
     mill_ready(mill)
-    MillIO.off(mill)
+    Application.get_env(:internet_of_mills, :mill_io).off(mill)
   end
 
   def mill_ready(mill) do
-    if MillIO.find(mill) == nil do
-      MillIO.add(mill)
+    if Application.get_env(:internet_of_mills, :mill_io).find(mill) == nil do
+      Application.get_env(:internet_of_mills, :mill_io).add(mill)
     end
   end
 

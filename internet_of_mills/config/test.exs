@@ -6,6 +6,8 @@ config :internet_of_mills, InternetOfMillsWeb.Endpoint,
   http: [port: 4001],
   server: false
 
+config :internet_of_mills, mill_io: InternetOfMills.Peripheral.MillIO
+
 # Print only warnings and errors during test
 config :logger, level: :warn
 

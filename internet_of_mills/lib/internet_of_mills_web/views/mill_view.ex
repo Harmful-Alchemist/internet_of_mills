@@ -1,7 +1,6 @@
 defmodule InternetOfMillsWeb.MillView do
   use InternetOfMillsWeb, :view
   alias InternetOfMillsWeb.MillView
-    alias InternetOfMills.Peripheral.MillIO
 
   def render("index.json", %{mills: mills}) do
     %{data: render_many(mills, MillView, "mill.json")}
@@ -16,6 +15,7 @@ defmodule InternetOfMillsWeb.MillView do
       name: mill.name,
       type: mill.type,
       io_pin: mill.io_pin,
-      on: MillIO.on?(mill)}
+      on: Application.get_env(:internet_of_mills, :mill_io).on?(mill)}
   end
+
 end

@@ -18,6 +18,8 @@ config :internet_of_mills, InternetOfMillsWeb.Endpoint,
   url: [host: "example.com", port: 80],
   cache_static_manifest: "priv/static/cache_manifest.json"
 
+config :internet_of_mills, mill_io: InternetOfMills.Peripheral.MillIO
+
 # Do not print debug messages in production
 config :logger, level: :info
 
