@@ -27,9 +27,10 @@ defmodule  InternetOfMills.Peripheral.FakeMillIO do
   @doc """
    Update a mill.
   """
-  def update(old_mill, new_mill) do
+  def update(new_mill, old_mill) do
     remove(old_mill)
     add(new_mill)
+    new_mill
   end
 
   @doc """

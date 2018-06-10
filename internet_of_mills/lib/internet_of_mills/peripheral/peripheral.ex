@@ -7,6 +7,7 @@ defmodule InternetOfMills.Peripheral do
   alias InternetOfMills.Repo
 
   alias InternetOfMills.Peripheral.Mill
+  @millIO Application.get_env(:internet_of_mills, :mill_io)
 
 
   @doc """
@@ -69,6 +70,7 @@ defmodule InternetOfMills.Peripheral do
 
   """
   def update_mill(%Mill{} = mill, attrs) do
+    @millIO.remove(mill)
     mill
     |> Mill.changeset(attrs)
     |> Repo.update()
@@ -87,6 +89,7 @@ defmodule InternetOfMills.Peripheral do
 
   """
   def delete_mill(%Mill{} = mill) do
+    @millIO.remove(mill)
     Repo.delete(mill)
   end
 
@@ -105,17 +108,17 @@ defmodule InternetOfMills.Peripheral do
 
   def turn_on(%Mill{} = mill) do
     mill_ready(mill)
-    Application.get_env(:internet_of_mills, :mill_io).on(mill)
+    @millIO.on(mill)
   end
 
   def turn_off(%Mill{} = mill) do
     mill_ready(mill)
-    Application.get_env(:internet_of_mills, :mill_io).off(mill)
+    @millIO.off(mill)
   end
 
-  def mill_ready(mill) do
-    if Application.get_env(:internet_of_mills, :mill_io).find(mill) == nil do
-      Application.get_env(:internet_of_mills, :mill_io).add(mill)
+  defp mill_ready(mill) do
+    if @millIO.find(mill) == nil do
+      @millIO.add(mill)
     end
   end
 
