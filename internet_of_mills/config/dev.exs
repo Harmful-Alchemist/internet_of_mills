@@ -16,6 +16,8 @@ config :internet_of_mills, InternetOfMillsWeb.Endpoint,
 
 
 config :internet_of_mills, mill_io: InternetOfMills.Peripheral.FakeMillIO
+
+config :picam, camera: Picam.FakeCamera
 # ## SSL Support
 #
 # In order to use HTTPS in development, a self-signed

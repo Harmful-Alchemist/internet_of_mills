@@ -37,7 +37,7 @@ var _user$project$Main$pinOptions = function (model) {
 		_elm_lang$core$List$filter,
 		_user$project$Main$unusedPin(
 			_user$project$Main$usedPins(model)),
-		A2(_elm_lang$core$List$range, 2, 26));
+		A2(_elm_lang$core$List$range, 5, 26));
 	return A2(
 		_elm_lang$core$List$map,
 		_user$project$Main$pinToOption,

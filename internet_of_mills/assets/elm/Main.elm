@@ -189,7 +189,7 @@ newMillForm model mill =
 pinOptions : Model -> List (Html Msg)
 pinOptions model =
   let
-    possiblePiPins = List.filter (unusedPin (usedPins model)) (List.range 2 26)
+    possiblePiPins = List.filter (unusedPin (usedPins model)) (List.range 5 26)
   in
     List.map pinToOption (-1 :: possiblePiPins)
 

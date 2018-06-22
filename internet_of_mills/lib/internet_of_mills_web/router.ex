@@ -16,6 +16,7 @@ defmodule InternetOfMillsWeb.Router do
   scope "/", InternetOfMillsWeb do
     pipe_through :browser # Use the default browser stack
 
+    forward "/cam", PicamStreamer
     get "/", PageController, :index
   end
 
