@@ -141,10 +141,14 @@ normalView model =
     Just newMill ->
       div[class "new_mill"] [newMillForm model newMill]
     Nothing ->
-      div [class "mills"] [
-       viewMills model.mills
-       , button [onClick NewMill] [text "New mill"]
-  ]
+      div [class "display"]
+      [
+        div [class "mills"] [
+         viewMills model.mills
+         , button [onClick NewMill] [text "New mill"]
+         ]
+         , img [class "mill_stream", alt "stream", src "/cam"][]
+       ]
 
 viewMills : List Mill -> Html Msg
 viewMills mills =

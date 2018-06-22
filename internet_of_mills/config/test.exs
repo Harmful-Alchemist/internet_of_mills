@@ -14,6 +14,6 @@ config :internet_of_mills, InternetOfMills.Repo,
   adapter: Ecto.Adapters.Postgres,
   username: "postgres",
   password: "postgres",
-  database: "internet_of_mills_test",
+  database: "internet_of_mills_dev",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox

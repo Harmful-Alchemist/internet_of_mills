@@ -465,26 +465,56 @@ var _user$project$Main$normalView = function (model) {
 			_elm_lang$html$Html$div,
 			{
 				ctor: '::',
-				_0: _elm_lang$html$Html_Attributes$class('mills'),
+				_0: _elm_lang$html$Html_Attributes$class('display'),
 				_1: {ctor: '[]'}
 			},
 			{
 				ctor: '::',
-				_0: _user$project$Main$viewMills(model.mills),
+				_0: A2(
+					_elm_lang$html$Html$div,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$class('mills'),
+						_1: {ctor: '[]'}
+					},
+					{
+						ctor: '::',
+						_0: _user$project$Main$viewMills(model.mills),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$button,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Events$onClick(_user$project$Main$NewMill),
+									_1: {ctor: '[]'}
+								},
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html$text('New mill'),
+									_1: {ctor: '[]'}
+								}),
+							_1: {ctor: '[]'}
+						}
+					}),
 				_1: {
 					ctor: '::',
 					_0: A2(
-						_elm_lang$html$Html$button,
+						_elm_lang$html$Html$img,
 						{
 							ctor: '::',
-							_0: _elm_lang$html$Html_Events$onClick(_user$project$Main$NewMill),
-							_1: {ctor: '[]'}
+							_0: _elm_lang$html$Html_Attributes$class('mill_stream'),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$alt('stream'),
+								_1: {
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$src('/cam'),
+									_1: {ctor: '[]'}
+								}
+							}
 						},
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html$text('New mill'),
-							_1: {ctor: '[]'}
-						}),
+						{ctor: '[]'}),
 					_1: {ctor: '[]'}
 				}
 			});
