@@ -7,10 +7,6 @@ defmodule InternetOfMillsWeb.PicamStreamer do
  @behaviour Plug
  @boundary "w58EW1cEpjzydSCq"
 
-
- @behaviour Plug
- @boundary "w58EW1cEpjzydSCq"
-
   def init(opts), do: opts
 
   def call(conn, _opts) do
