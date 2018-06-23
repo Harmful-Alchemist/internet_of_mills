@@ -45,7 +45,7 @@ defmodule  InternetOfMills.Peripheral.MillIO do
   Turn on a mill.
   """
   def on(mill) do
-    {mill, pid} = find(mill)
+    {_mill, pid} = find(mill)
     GPIO.write(pid, true)
   end
 
@@ -53,7 +53,7 @@ defmodule  InternetOfMills.Peripheral.MillIO do
   Turn off a mill.
   """
   def off(mill) do
-    {mill, pid} = find(mill)
+    {_mill, pid} = find(mill)
     GPIO.write(pid, false)
   end
 
@@ -61,8 +61,9 @@ defmodule  InternetOfMills.Peripheral.MillIO do
    See if a mill is turned on.
   """
   def on?(mill) do
+    :timer.sleep(100)
     case find(mill) do
-      {mill, pid} ->
+      {_mill, pid} ->
         GPIO.read(pid) == 1
       nil ->
         false
