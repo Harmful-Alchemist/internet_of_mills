@@ -4,8 +4,8 @@ defmodule InternetOfMillsWeb.MillControllerTest do
   alias InternetOfMills.Peripheral
   alias InternetOfMills.Peripheral.Mill
 
-  @create_attrs %{io_pin: 42, name: "some name", type: "some type"}
-  @update_attrs %{io_pin: 43, name: "some updated name", type: "some updated type"}
+  @create_attrs %{io_pin: 18, name: "some name", type: "some type"}
+  @update_attrs %{io_pin: 23, name: "some updated name", type: "some updated type"}
   @invalid_attrs %{io_pin: nil, name: nil, type: nil}
 
   def fixture(:mill) do
@@ -32,9 +32,10 @@ defmodule InternetOfMillsWeb.MillControllerTest do
       conn = get conn, mill_path(conn, :show, id)
       assert json_response(conn, 200)["data"] == %{
         "id" => id,
-        "io_pin" => 42,
+        "io_pin" => 18,
         "name" => "some name",
-        "type" => "some type"}
+        "type" => "some type",
+        "on" => false}
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
@@ -53,9 +54,10 @@ defmodule InternetOfMillsWeb.MillControllerTest do
       conn = get conn, mill_path(conn, :show, id)
       assert json_response(conn, 200)["data"] == %{
         "id" => id,
-        "io_pin" => 43,
+        "io_pin" => 23,
         "name" => "some updated name",
-        "type" => "some updated type"}
+        "type" => "some updated type",
+        "on" => false}
     end
 
     test "renders errors when data is invalid", %{conn: conn, mill: mill} do

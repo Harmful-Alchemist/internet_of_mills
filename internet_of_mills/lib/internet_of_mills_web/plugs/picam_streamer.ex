@@ -1,6 +1,6 @@
 defmodule InternetOfMillsWeb.PicamStreamer do
   @moduledoc """
- Plug for streaming an image
+ Plug for streaming an image. From here: https://github.com/electricshaman/picam/tree/master/examples/picam_http
  """
  import Plug.Conn
 

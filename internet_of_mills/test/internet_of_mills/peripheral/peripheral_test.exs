@@ -6,9 +6,10 @@ defmodule InternetOfMills.PeripheralTest do
   describe "mills" do
     alias InternetOfMills.Peripheral.Mill
 
-    @valid_attrs %{io_pin: 42, name: "some name", type: "some type"}
-    @update_attrs %{io_pin: 43, name: "some updated name", type: "some updated type"}
+    @valid_attrs %{io_pin: 18, name: "some name", type: "some type"}
+    @update_attrs %{io_pin: 23, name: "some updated name", type: "some updated type"}
     @invalid_attrs %{io_pin: nil, name: nil, type: nil}
+    @millIO Application.get_env(:internet_of_mills, :mill_io)
 
     def mill_fixture(attrs \\ %{}) do
       {:ok, mill} =
@@ -31,7 +32,7 @@ defmodule InternetOfMills.PeripheralTest do
 
     test "create_mill/1 with valid data creates a mill" do
       assert {:ok, %Mill{} = mill} = Peripheral.create_mill(@valid_attrs)
-      assert mill.io_pin == 42
+      assert mill.io_pin == 18
       assert mill.name == "some name"
       assert mill.type == "some type"
     end
@@ -44,7 +45,7 @@ defmodule InternetOfMills.PeripheralTest do
       mill = mill_fixture()
       assert {:ok, mill} = Peripheral.update_mill(mill, @update_attrs)
       assert %Mill{} = mill
-      assert mill.io_pin == 43
+      assert mill.io_pin == 23
       assert mill.name == "some updated name"
       assert mill.type == "some updated type"
     end
@@ -64,6 +65,19 @@ defmodule InternetOfMills.PeripheralTest do
     test "change_mill/1 returns a mill changeset" do
       mill = mill_fixture()
       assert %Ecto.Changeset{} = Peripheral.change_mill(mill)
+    end
+
+    test "turn_on/1 turns on a mill" do
+      mill = mill_fixture()
+      Peripheral.turn_on(mill)
+      assert @millIO.on?(mill)
+    end
+
+    test "turn_off/1 turns off a mill" do
+      mill = mill_fixture()
+      Peripheral.turn_on(mill)
+      Peripheral.turn_off(mill)
+      assert not @millIO.on?(mill)
     end
   end
 end

@@ -1,26 +1,23 @@
 use Mix.Config
 
-# For development, we disable any cache and enable
-# debugging and code reloading.
-#
-# The watchers configuration can be used to run external
-# watchers to your application. For example, we use it
-# with brunch.io to recompile .js and .css sources.
+# We don't run a server during test. If one is required,
+# you can enable the server option below.
 config :internet_of_mills, InternetOfMillsWeb.Endpoint,
-  http: [port: 4001]
+  http: [port: 4001],
+  server: false
 
-# Do not include metadata nor timestamps in development logs
-config :logger, :console, format: "[$level] $message\n"
+# Print only warnings and errors during test
+config :logger, level: :warn
 
-# Set a higher stacktrace during development. Avoid configuring such
-# in production as building large stacktraces may be expensive.
-config :phoenix, :stacktrace_depth, 20
+config :internet_of_mills, mill_io: InternetOfMills.Peripheral.FakeMillIO
+
+config :picam, camera: Picam.FakeCamera
 
 # Configure your database
 config :internet_of_mills, InternetOfMills.Repo,
   adapter: Ecto.Adapters.Postgres,
   username: "postgres",
   password: "postgres",
-  database: "internet_of_mills_dev",
+  database: "internet_of_mills_test",
   hostname: "localhost",
-  pool_size: 10
+  pool: Ecto.Adapters.SQL.Sandbox
