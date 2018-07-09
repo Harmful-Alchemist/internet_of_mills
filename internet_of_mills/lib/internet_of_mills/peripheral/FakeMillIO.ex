@@ -4,7 +4,7 @@ defmodule  InternetOfMills.Peripheral.FakeMillIO do
   """
 
   def start_link do
-    Agent.start_link fn -> [] end, name: __MODULE__
+    Agent.start_link fn -> %{} end, name: __MODULE__
   end
 
   @doc """
@@ -12,7 +12,7 @@ defmodule  InternetOfMills.Peripheral.FakeMillIO do
   """
   def add(mill) do
     IO.puts("adding mill #{mill.name}")
-    Agent.update __MODULE__, fn mills -> [{mill, false} | mills] end
+    Agent.update __MODULE__, &Map.put(&1, mill, false)
   end
 
   @doc """
@@ -20,8 +20,7 @@ defmodule  InternetOfMills.Peripheral.FakeMillIO do
   """
   def remove(mill) do
   IO.puts("Removing mill #{mill.name}")
-  found = find(mill)
-  Agent.update  __MODULE__, fn mills -> List.delete(mills, found) end
+  Agent.get_and_update __MODULE__, &Map.pop(&1, mill)
   end
 
   @doc """
@@ -38,8 +37,7 @@ defmodule  InternetOfMills.Peripheral.FakeMillIO do
   """
   def on(mill) do
     IO.puts("turning on mill #{mill.name}")
-    remove(mill)
-    Agent.update __MODULE__, fn mills -> [{mill, true} | mills] end
+    Agent.update __MODULE__, &Map.replace!(&1, mill, true)
   end
 
   @doc """
@@ -47,8 +45,7 @@ defmodule  InternetOfMills.Peripheral.FakeMillIO do
   """
   def off(mill) do
     IO.puts("turning off mill #{mill.name}")
-    remove(mill)
-    Agent.update __MODULE__, fn mills -> [{mill, false} | mills] end
+    Agent.update __MODULE__, &Map.replace!(&1, mill, false)
   end
 
   @doc """
@@ -57,18 +54,16 @@ defmodule  InternetOfMills.Peripheral.FakeMillIO do
   def on?(mill) do
     IO.puts("Checking if mill #{mill.name} is on")
     case find(mill) do
-    {_, status} ->
-      IO.puts("Found status for mill #{mill.name} it was #{status}")
-      status
-    nil ->
-      IO.puts("Did not find mill #{mill.name}")
-      false
+      nil ->
+        false
+      anything ->
+        anything
     end
   end
 
   def find(mill) do
     IO.puts("Finding mill #{mill.name}")
-    Agent.get  __MODULE__, fn mills -> Enum.find(mills, fn(element) -> match?({^mill, _}, element) end) end
+    Agent.get __MODULE__, &Map.get(&1, mill)
   end
 
 end

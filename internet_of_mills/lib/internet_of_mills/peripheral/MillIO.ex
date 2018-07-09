@@ -7,7 +7,7 @@ defmodule  InternetOfMills.Peripheral.MillIO do
   alias InternetOfMills.PinSupervisor
 
   def start_link do
-    Agent.start_link fn -> [] end, name: __MODULE__
+    Agent.start_link fn -> %{} end, name: __MODULE__
   end
 
   @doc """
@@ -32,7 +32,7 @@ defmodule  InternetOfMills.Peripheral.MillIO do
   def remove(mill) do
     pid = find(mill)
     DynamicSupervisor.terminate_child(PinSupervisor, pid)
-    Agent.update  __MODULE__, &Map.pop(&1, mill)
+    Agent.get_and_update  __MODULE__, &Map.pop(&1, mill)
   end
 
   @doc """
