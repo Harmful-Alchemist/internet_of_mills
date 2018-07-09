@@ -8,6 +8,10 @@ config :logger, :console, format: "[$level] $message\n"
 
 config :phoenix, :stacktrace_depth, 20
 
+config :internet_of_mills, mill_io: InternetOfMills.Peripheral.MillIO
+
+config :picam, camera: Picam.Camera
+
 config :internet_of_mills, InternetOfMills.Repo,
   adapter: Ecto.Adapters.Postgres,
   username: "postgres",
