@@ -12,6 +12,9 @@ defmodule InternetOfMills.Application do
       supervisor(InternetOfMills.Repo, []),
       # Start the endpoint when the application starts
       supervisor(InternetOfMillsWeb.Endpoint, []),
+      # supervise the IO connections
+      supervisor(DynamicSupervisor, [[strategy: :one_for_one, name: InternetOfMills.PinSupervisor]]),
+      # {DynamicSupervisor, strategy: :one_for_one, name: InternetOfMills.PinSupervisor},
       # Start your own worker by calling: InternetOfMills.Worker.start_link(arg1, arg2, arg3)
       worker(Application.get_env(:internet_of_mills, :mill_io, InternetOfMills.Peripheral.MillIO), []),
       worker(Application.get_env(:picam, :camera, Picam.Camera), []),
