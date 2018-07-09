@@ -4,6 +4,7 @@ defmodule  InternetOfMills.Peripheral.MillIO do
   """
 
   alias ElixirALE.GPIO
+  alias InternetOfMills.PinSupervisor
 
   def start_link do
     Agent.start_link fn -> [] end, name: __MODULE__
@@ -13,8 +14,7 @@ defmodule  InternetOfMills.Peripheral.MillIO do
    Add a mill so we can interact with it's pin.
   """
   def add(mill) do
-    GPIO.start_link(mill.io_pin, :output)
-    case DynamicSupervisor.start_child(InternetOfMills.Pinsupervisor, {GPIO, pin: mill.io_pin, pin_direction: :output})  do
+    case DynamicSupervisor.start_child(PinSupervisor, {GPIO, pin: mill.io_pin, pin_direction: :output})  do
         {:ok, pid} ->
           Agent.update __MODULE__, fn mills -> [{mill, pid} | mills] end
           {:ok, pid}
@@ -31,7 +31,7 @@ defmodule  InternetOfMills.Peripheral.MillIO do
   def remove(mill) do
     GPIO.release(mill.io_pin)
     {_mill, pid} = find(mill)
-    DynamicSupervisor.terminate_child(InternetOfMills.Pinsupervisor, pid)
+    DynamicSupervisor.terminate_child(PinSupervisor, pid)
     Agent.update  __MODULE__, fn mills -> List.delete(mills, find(mill)) end
   end
 
