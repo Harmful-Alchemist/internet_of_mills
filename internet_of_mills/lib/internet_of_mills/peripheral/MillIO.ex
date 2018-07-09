@@ -21,6 +21,7 @@ defmodule  InternetOfMills.Peripheral.MillIO do
           Agent.update __MODULE__, fn mills -> [{mill, pid} | mills] end
           {:ok, pid}
         {:error, msg} ->
+          IO.puts("Uh oh couldn't a add a mill because: #{msg}")
           {:error, msg}
     end
 
