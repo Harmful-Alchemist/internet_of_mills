@@ -17,7 +17,7 @@ defmodule  InternetOfMills.Peripheral.MillIO do
     spec_old = %{id: GPIO, start: {GPIO, :start_link, [mill.io_pin, :output]}}
     case DynamicSupervisor.start_child(PinSupervisor, spec_old)  do
         {:ok, pid} ->
-          Agent.update __MODULE__, fn mills -> [{mill, pid} | mills] end
+          Agent.update __MODULE__, &Map.put(&1, mill, pid)
           {:ok, pid}
         {:error, msg} ->
           {:error, msg}
@@ -30,10 +30,9 @@ defmodule  InternetOfMills.Peripheral.MillIO do
    Remove a mill, freeing it's pin.
   """
   def remove(mill) do
-    GPIO.release(mill.io_pin)
-    {_mill, pid} = find(mill)
+    pid = find(mill)
     DynamicSupervisor.terminate_child(PinSupervisor, pid)
-    Agent.update  __MODULE__, fn mills -> List.delete(mills, find(mill)) end
+    Agent.update  __MODULE__, &Map.pop(&1, mill)
   end
 
   @doc """
@@ -49,7 +48,7 @@ defmodule  InternetOfMills.Peripheral.MillIO do
   Turn on a mill.
   """
   def on(mill) do
-    {_mill, pid} = find(mill)
+    pid = find(mill)
     GPIO.write(pid, true)
   end
 
@@ -57,7 +56,7 @@ defmodule  InternetOfMills.Peripheral.MillIO do
   Turn off a mill.
   """
   def off(mill) do
-    {_mill, pid} = find(mill)
+    pid = find(mill)
     GPIO.write(pid, false)
   end
 
@@ -67,15 +66,18 @@ defmodule  InternetOfMills.Peripheral.MillIO do
   def on?(mill) do
     :timer.sleep(100)
     case find(mill) do
-      {_mill, pid} ->
+      pid ->
         GPIO.read(pid) == 1
       nil ->
         false
     end
   end
 
+  @doc """
+    See if a mill is already there. Returns nil if it's not there. Otherwise returns the PID of the GPIO process.
+  """
   def find(mill) do
-    Agent.get  __MODULE__, fn mills -> Enum.find(mills, fn(element) -> match?({^mill, _}, element) end) end
+    Agent.get  __MODULE__, &Map.get(&1, mill)
   end
 
 end
