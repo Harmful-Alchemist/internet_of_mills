@@ -5,7 +5,7 @@ defmodule InternetOfMills.Mixfile do
     [
       app: :internet_of_mills,
       version: "0.9.0",
-      elixir: "~> 1.4",
+      elixir: "~> 1.6",
       elixirc_paths: elixirc_paths(Mix.env),
       compilers: [:phoenix, :gettext] ++ Mix.compilers,
       start_permanent: Mix.env == :prod,
