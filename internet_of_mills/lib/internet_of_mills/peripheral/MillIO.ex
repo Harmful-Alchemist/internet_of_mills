@@ -13,7 +13,8 @@ defmodule  InternetOfMills.Peripheral.MillIO do
    Add a mill so we can interact with it's pin.
   """
   def add(mill) do
-    case GPIO.start_link(mill.io_pin, :output)  do
+    GPIO.start_link(mill.io_pin, :output)
+    case DynamicSupervisor.start_child(InternetOfMills.Pinsupervisor, {GPIO, pin: mill.io_pin, pin_direction: :output})  do
         {:ok, pid} ->
           Agent.update __MODULE__, fn mills -> [{mill, pid} | mills] end
           {:ok, pid}
