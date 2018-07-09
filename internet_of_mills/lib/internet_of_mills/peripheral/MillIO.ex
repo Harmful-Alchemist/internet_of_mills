@@ -15,7 +15,9 @@ defmodule  InternetOfMills.Peripheral.MillIO do
   """
   def add(mill) do
     case DynamicSupervisor.start_child(PinSupervisor, {GPIO, pin: mill.io_pin, pin_direction: :output})  do
+        IO.puts("adding a mill")
         {:ok, pid} ->
+          IO.puts("with pid #{pid}")
           Agent.update __MODULE__, fn mills -> [{mill, pid} | mills] end
           {:ok, pid}
         {:error, msg} ->
