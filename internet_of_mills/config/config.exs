@@ -17,8 +17,6 @@ config :internet_of_mills, InternetOfMillsWeb.Endpoint,
   pubsub: [name: InternetOfMills.PubSub,
            adapter: Phoenix.PubSub.PG2]
 
-config :internet_of_mills, mill_io: InternetOfMills.Peripheral.MillIO
-
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",

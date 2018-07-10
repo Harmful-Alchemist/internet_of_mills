@@ -66,10 +66,10 @@ defmodule  InternetOfMills.Peripheral.MillIO do
   def on?(mill) do
     :timer.sleep(100)
     case find(mill) do
-      pid ->
-        GPIO.read(pid) == 1
       nil ->
         false
+      pid ->
+        GPIO.read(pid) == 1
     end
   end
 
