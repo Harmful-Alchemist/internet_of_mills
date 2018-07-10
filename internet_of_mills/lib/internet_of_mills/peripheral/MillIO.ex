@@ -31,8 +31,13 @@ defmodule  InternetOfMills.Peripheral.MillIO do
   """
   def remove(mill) do
     pid = find(mill)
-    DynamicSupervisor.terminate_child(PinSupervisor, pid)
-    Agent.get_and_update  __MODULE__, &Map.pop(&1, mill)
+    case find(mill) do
+      nil ->
+        nil
+      pid ->
+        DynamicSupervisor.terminate_child(PinSupervisor, pid)
+        Agent.get_and_update  __MODULE__, &Map.pop(&1, mill)
+    end
   end
 
   @doc """
